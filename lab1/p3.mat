@@ -1,0 +1,15 @@
+fn sum(arr: [i32; 10]) -> i32 {
+    var res: i32 = 0;
+
+    for (var i: i8 = 0; i < arr.len; ++i) {
+        res += arr[i];
+    }
+
+    return res;
+}
+
+fn main() -> i32 {
+    var arr: [i32, 5] = [5, 4, 3, 2, 1];
+    sum(arr);
+    return 0;
+}
