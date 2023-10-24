@@ -1,4 +1,4 @@
-fn max(num1: 32, num2: i32, num3: i32) -> i32 {
+fn max(num1: i32, num2: i32, num3: i32) -> i32 {
     var res: i32;
 
     if (num1 > num2) {

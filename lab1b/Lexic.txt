@@ -1,0 +1,32 @@
+The language is case sensitive.
+
+I. Identifiers: a sequence of letters and/or digits, such that the first character letter
+identifier ::= letter{letter}{digit}
+letter ::= "A" | "B" | ... | "Z" | "a" | "b" | ... | "z"
+digit ::= "0" | "1" | ... | "9"
+
+II. Constants:
+1. integer:
+    const-no ::= "+"no | "-"no | no
+    no ::= digit{no}
+2. string:
+    const-str ::= "str"
+    str ::= char{string}
+    char ::= letter | digit
+
+III. Reserved Words: 
+    i32
+    str
+    var
+    const
+    return
+    if
+    else
+    while
+    read
+    write
+    fn
+
+IV. Separators: () [] {} : ; , -> whitespace
+
+V. Operators: + - * / % = == != < > <= >= not and or

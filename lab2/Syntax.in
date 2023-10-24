@@ -1,33 +1,109 @@
-whitespace ::= " " | "\t" | "\n"
-terminator ::= ";"
-arithmetic-op ::= "+" | "-" | "*" | "/" | "%"
-relational-op ::= "<" | ">" | "<=" | ">=" | "==" | "!="
-logical-op ::= "not" | "and" | "or"
-expression-op ::= arithmetic-op | relational-op | logical-op
+# Grammar Syntax:
+# The grammar uses the EBNF notation with few changes.
+#
+# rule_name: expression
+#   Definition of a rule
+# e1 e2
+#   Match e1, then match e2
+# e1 | e2
+#   Match e1 or e2
+#   The first alternative can also appear on the next line for formatting purposes. In that case, "|" must be used before the first alternative, like so:
+#       rule_name:
+#           | e1
+#           | e2
+# [ ... ]
+#   optional (none or once)
+# { ... }
+#   repetition (none or more)
+# ( ... )
+#   group
+# " ... "
+#   terminal string
+# ' ... '
+#   terminal string
+# (* ... *)
+#   Multiline comment
+# #
+#   Single line comment
+#
 
-basic-type ::= "i32" | "str"
-array-decl ::= "[" , const-no , ";" , type , "]"
-type ::= basic-type | array-decl
+# STARTING RULES
+# ==============
+start: "fn" "main" "(" ")" "->" "i32" stmt_block
 
-term ::= const-no | const-str | identifier
-expression ::= term | "(" , expression , ")" | expression , expression-op , expression
-condition ::= expression
+# GENERAL RULES
+# =============
+terminator: ";"
 
-var-decl ::= ("var" | "const") , identifier , ":" , type
-assignment-stmt ::= identifier , "=" , expression
+uppercase_letter: "A" | "B" | ... | "Z"
+lowercase_letter: "a" | ... | "z"
+letter:
+    | uppercase_letter
+    | lowercase_letter
 
-if-stmt ::= "if" , "(" , condition , ")" , "{" , stmt , "}" , [ "else" , "{" , stmt , "}" ]
-while-stmt ::= "while" , "(" , condition , ")" , "{" , stmt , "}"
+zero_digit: "0"
+nonzero_digit: "1" | ... | "9"
+digit:
+    | zero_digit
+    | nonzero_digit
 
-read-stmt ::= "read" , identifier
-write-stmt ::= "write" , expression
+id: letter { letter | digit }
 
-io-stmt ::= read-stmt | write-stmt
-flow-stmt ::= if-stmt | while-stmt
-return-stmt ::= "return" , const-no
-stmt ::= 
-      (var-decl | assignment-stmt | io-stmt | return-stmt) , terminator
-    | flow-stmt
-    | stmt{stmt}
+int: nonzero_digit { digit }
+str: '"' { letter | digit } '"'
 
-program ::= "fn" , "main" , "(" , ")" , "->" , "i32" , "{" , stmt , "}"
+assignment_op: "="
+arithmetic_op: "+" | "-" | "*" | "/" | "%"
+logical_op: "not" | "and" | "or"
+relational_op: "<" | ">" | "<=" | ">=" | "==" | "!="
+
+basic_type:
+    | "int"
+    | "str"
+array_type: "[" int ";" type "]"
+
+type:
+    | basic_type
+    | array_type
+
+term:
+    | identifier
+    | int
+    | str
+expression_op:
+    | arithmetic_op
+    | logical_op
+    | relational_op
+expression:
+    | term
+    | expression expression_op expression
+
+condition: expression
+
+var_declaration: ( "var" | "const" ) identifier ":" type
+assignment_stmt: identifier assignment_op expression
+
+# flow statements
+if_stmt: "if" "(" condition ")" stmt_block [ "else" stmt_block ]
+while_stmt: "while" "(" condition ")" stmt_block
+flow_stmt:
+    | if_stmt
+    | while_stmt
+
+# io statements
+read_stmt: "read" identifier
+write_stmt: "write" expression
+io_stmt:
+    | read_stmt
+    | write_stmt
+
+return_stmt: "return" ( int | str )
+
+stmt:
+    | var_declaration terminator
+    | assignment_stmt terminator
+    | io_stmt terminator
+    | return_stmt terminator
+    | flow_stmt
+
+stmt_block: "{" { stmt } "}"
