@@ -1,4 +1,4 @@
-max(num1: int, num2: int, num3: int) -> int {
+max(1num1: int, num2: int, num3: int) -> int {
     var res: int;
 
     if (num1 > num2) {

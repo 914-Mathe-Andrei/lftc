@@ -9,15 +9,17 @@ ZERO_DIGIT = '0'
 NONZERO_DIGIT = '123456789'
 DIGIT = ZERO_DIGIT + NONZERO_DIGIT
 
-ID_START = LETTER
+ID_START = (
+    LETTER +
+    UNDERSCORE
+)
 ID_CONTINUE = (
     LETTER +
     DIGIT +
     UNDERSCORE
 )
 
-INT_START = NONZERO_DIGIT
-INT_CONTINUE = DIGIT
+INT = DIGIT
 
 STR_QUOTE = '"'
 STR = (
@@ -40,7 +42,8 @@ OPERATORS = sorted([
     '<',
     '<=',
     '>',
-    '>='
+    '>=',
+    '.'
 ], key=lambda x: len(x), reverse=True)
 
 SEPARATORS = sorted([

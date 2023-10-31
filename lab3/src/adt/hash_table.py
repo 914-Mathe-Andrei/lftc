@@ -125,6 +125,10 @@ class HashTable:
         """
         return hash(key) % self.__size
 
+    def __len__(self):
+        """ Returns the number of entries. """
+        return len(self.entries)
+
     def __str__(self):
         """ Returns the hash table's data in a json formatted string. """
         def serializer_custom_types(obj: Any):

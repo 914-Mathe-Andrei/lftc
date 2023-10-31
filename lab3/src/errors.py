@@ -11,4 +11,4 @@ class LexicalError(Exception):
         self.col: int = col             # column number where error occurred
 
     def __str__(self):
-        return f"Error at {self.line}:{self.col}: {self.message}"
+        return f"LexicalError at {self.line}:{self.col}: {self.message}"

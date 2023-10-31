@@ -27,7 +27,7 @@ class ImmutableBuffer:
             if c in '\n':
                 break
             result += 1
-        return result
+        return result + 1
 
     def get(self, size: int | None = None) -> str:
         """ Returns the next `size` characters in a string.

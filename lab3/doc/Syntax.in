@@ -35,6 +35,7 @@ start: "fn" "main" "(" ")" "->" "i32" stmt_block
 # =============
 terminator: ";"
 
+underscore: "_"
 uppercase_letter: "A" | "B" | ... | "Z"
 lowercase_letter: "a" | ... | "z"
 letter:
@@ -47,9 +48,9 @@ digit:
     | zero_digit
     | nonzero_digit
 
-id: letter { letter | digit | "_" }
+id: ( underscore | letter ) { letter | digit | underscore }
 
-int: nonzero_digit { digit }
+int: zero_digit | nonzero_digit { digit }
 str: '"' { letter | digit } '"'
 
 assignment_op: "="

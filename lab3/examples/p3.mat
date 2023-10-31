@@ -1,4 +1,4 @@
-fn sum(arr: [int; 10]) -> i32 {
+fn sum(arr: [int; 10]) -> int {
     var res: int = 0;
 
     for (var i: int = 0; i < arr.len; ++i) {

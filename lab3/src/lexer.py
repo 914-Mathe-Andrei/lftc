@@ -1,8 +1,8 @@
 from src.adt.buffer import ImmutableBuffer
 from src.program import Program
 from src.stuctures.pif import TokenType
-from grammar import *
-from errors import *
+from src.grammar import *
+from src.errors import *
 from typing import IO
 
 
@@ -32,8 +32,8 @@ def _detect_str(buffer: ImmutableBuffer, c: str) -> str:
         if c not in STR:
             # adjust the cursor such that it get the right line and column number
             # where the error has occurred
-            buffer.put(1)
-            raise LexicalError(f"string {token} is missing closing quote [{STR_QUOTE}]", buffer.line, buffer.col)
+            buffer.put(len(token) + 1)
+            raise LexicalError(f"unterminated string literal {token}", buffer.line, buffer.col)
 
         # valid character found
         token += c
@@ -59,18 +59,22 @@ def _detect_int(buffer: ImmutableBuffer, c: str) -> str:
 
     while c := buffer.get(1):
         # invalid character found
-        if c not in INT_CONTINUE:
+        if c not in INT:
             # the found character is part of an id
             if c in ID_CONTINUE:
-                # adjust the cursor such that it get the right line and column number
-                # where the error has occurred
-                buffer.put(2)
-                c = buffer.get(1)
-                raise LexicalError(f"identifier cannot start with character [{c}]", buffer.line, buffer.col)
+                buffer.put(1)
+                raise LexicalError(f"invalid character [{c}] in int literal {token + c}", buffer.line, buffer.col)
             # the found character is not part of an id
             # and the found int literal is valid
             buffer.put(1)
             break
+
+        # check if 0 has leading 0s
+        if token[0] in ZERO_DIGIT:
+            buffer.put(1)
+            raise LexicalError(f"leading zeros in int literal are not permitted", buffer.line, buffer.col)
+
+        # valid character
         token += c
 
     return token
@@ -170,7 +174,7 @@ def scan(file: IO) -> Program:
             program.pif.add(token, TokenType.LITERAL)
 
         # scan int literal
-        elif c in INT_START:
+        elif c in INT:
             token: str = _detect_int(buffer, c)
 
             # add it to the literal symbol table (if it does not exist already) and pif
@@ -212,6 +216,9 @@ def scan(file: IO) -> Program:
 
         # no token that starts with `c` could be detected
         else:
+            # adjust the cursor such that it get the right line and column number
+            # where the error has occurred
+            buffer.put(1)
             raise LexicalError(f"unexpected character [{c}]", buffer.line, buffer.col)
 
     return program

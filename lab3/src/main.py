@@ -1,12 +1,12 @@
 import math
 from src.lexer import scan
 from src.program import Program
-import errors
+from src.errors import LexicalError
 from typing import IO
 
 
 def main():
-    program_path: str = "examples/p1err.mat"
+    program_path: str = "examples/p3.mat"
     st_path: str = "examples/ST.out"
     pif_path: str = "examples/PIF.out"
     file: IO = open(program_path, 'r')
@@ -49,7 +49,7 @@ def main():
                 file.write(f"| {pair.token:<{math.ceil((spacing - 7) / 2)}} | {str(pair.type).split('.')[1]:<{math.floor((spacing - 7) / 2)}} |\n")
             file.write(f"{'-' * spacing}\n")
 
-    except errors.LexicalError as e:
+    except LexicalError as e:
         print(f"Lexical error:")
         print(f"{e}")
 
