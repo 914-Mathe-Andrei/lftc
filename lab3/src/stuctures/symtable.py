@@ -9,6 +9,11 @@ class IdSymTable:
     def __init__(self):
         self.__table: HashTable = HashTable()
 
+    @property
+    def ids(self) -> list[str]:
+        """ Returns a list of all the ids in the table. """
+        return list(map(lambda x: x.key, self.__table.entries))
+
     def add(self, id: str) -> None:
         """ Add a new identifier.
 
@@ -45,12 +50,8 @@ class IdSymTable:
         """
         return id in self.__table
 
-    @property
-    def ids(self) -> list[str]:
-        """ Returns a list of all the ids in the table. """
-        return list(map(lambda x: x.key, self.__table.entries))
-
     def __str__(self):
+        """ Returns a json formatted string as a representation. """
         return str(self.__table)
 
 
@@ -59,6 +60,11 @@ class LiteralSymTable:
 
     def __init__(self):
         self.__table: HashTable = HashTable()
+
+    @property
+    def literals(self) -> list[str]:
+        """ Returns a list of all the literals in the table. """
+        return list(map(lambda x: x.key, self.__table.entries))
 
     def add(self, literal: Any) -> None:
         """ Adds a new literal.
@@ -87,7 +93,7 @@ class LiteralSymTable:
         del self.__table[literal]
 
     def contains(self, literal: Any) -> bool:
-        """ Check if a literal is in the table.
+        """ Checks if a literal is in the table.
 
         Args:
             literal (Any): literal
@@ -96,10 +102,6 @@ class LiteralSymTable:
         """
         return literal in self.__table
 
-    @property
-    def literals(self) -> list[str]:
-        """ Returns a list of all the literals in the table. """
-        return list(map(lambda x: x.key, self.__table.entries))
-
     def __str__(self):
+        """ Returns a json formatted string as a representation. """
         return str(self.__table)

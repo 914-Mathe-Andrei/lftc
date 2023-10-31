@@ -32,9 +32,6 @@ class ProgramInternalForm:
         Args:
             token (str): token
             type (TokenType): type of token (id / literal / operator / separator / keyword)
-
-        Returns:
-
         """
         pair: ProgramInternalForm.Entry = self.Entry(token, type)
         self.__pairs.append(pair)

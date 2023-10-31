@@ -150,9 +150,10 @@ def scan(file: IO) -> Program:
 
     Raises:
         LexicalError:
-            if unexpected character was found
-            if identifier does not start with proper character
-            if string misses closing quotes
+            if unexpected character is found
+            if unterminated string literal is found
+            if invalid character in int literal is found
+            if leading zeros in int literal are found
     """
     # init immutable buffer for easily parse the source code
     buffer: ImmutableBuffer = ImmutableBuffer(file.read())
