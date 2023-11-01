@@ -18,7 +18,8 @@ max(1num1: int, num2: int, num3: int) -> int {
     return res;
 }
 
-fn main() -> int {
+fn main() -> int {$
     max(1, 2, 3);
+    var message: str = "dsa
     return 1;
 }
