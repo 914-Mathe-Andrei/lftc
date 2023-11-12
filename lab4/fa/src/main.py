@@ -2,6 +2,7 @@ from src.fa import (FiniteAutomata)
 
 
 def print_menu():
+    """ Prints the menu. """
     print(f"Menu:")
     print(f"\t1. display alphabet")
     print(f"\t2. display states")
@@ -17,13 +18,19 @@ def main():
     fa_path = 'input/fa_identifier.toml'
     fa = FiniteAutomata(fa_path)
 
+    # loop for the menu driven interface
     while True:
+        # print menu
         print_menu()
+
+        # let user choose an option
         option = input("> Choose an option: ").strip()
 
+        # check if user wants to quit
         if option == 'x':
             break
 
+        # to the thingies
         match option:
             case '1':
                 print('\n'.join(f"- {symbol}" for symbol in fa.alphabet))
