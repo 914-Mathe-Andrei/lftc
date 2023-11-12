@@ -4,7 +4,7 @@ import unittest
 
 from src import lexer
 from src.errors import LexicalError
-from src.stuctures.pif import ProgramInternalForm, TokenType
+from src.structures.pif import ProgramInternalForm, TokenType
 
 
 class LexerTestCase(unittest.TestCase):

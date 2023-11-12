@@ -1,6 +1,6 @@
 import unittest
 
-from src.stuctures.pif import ProgramInternalForm, TokenType
+from src.structures.pif import ProgramInternalForm, TokenType
 
 
 class ProgramInternalFormTestCase(unittest.TestCase):

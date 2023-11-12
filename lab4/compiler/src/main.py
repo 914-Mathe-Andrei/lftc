@@ -1,6 +1,8 @@
+import sys
 import math
+
 from src.lexer import scan
-from src.program import Program
+from src.structures.program import Program
 from src.errors import LexicalError
 from typing import IO
 
@@ -50,8 +52,7 @@ def main():
             file.write(f"{'-' * spacing}\n")
 
     except LexicalError as e:
-        print(f"Lexical error:")
-        print(f"{e}")
+        print(f"{e}", file=sys.stderr)
 
 
 if __name__ == '__main__':

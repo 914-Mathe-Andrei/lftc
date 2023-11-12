@@ -1,6 +1,7 @@
 from src.adt.buffer import ImmutableBuffer
-from src.program import Program
-from src.stuctures.pif import TokenType
+from src.fa import FiniteAutomata
+from src.structures.program import Program
+from src.structures.pif import TokenType
 from src.grammar import *
 from src.errors import *
 from typing import IO
@@ -55,27 +56,29 @@ def _detect_int(buffer: ImmutableBuffer, c: str) -> str:
     Raises:
         LexicalError: if int is the start of an identifier
     """
-    token: str = c
+    token: str = ""
 
-    while c := buffer.get(1):
-        # invalid character found
-        if c not in INT:
-            # the found character is part of an id
-            if c in ID_CONTINUE:
-                buffer.put(1)
-                raise LexicalError(f"invalid character [{c}] in int literal {token + c}", buffer.line, buffer.col)
-            # the found character is not part of an id
-            # and the found int literal is valid
-            buffer.put(1)
-            break
+    # place the character back
+    buffer.put(1)
 
+    # init finite automaton
+    fa = FiniteAutomata("input/fa_integer.toml")
+
+    try:
+        for c in fa.check_acceptance(buffer):
+            # valid character
+            token += c
+    except InvalidSymbol as e:
+        # the found character is part of an id
+        if e.symbol in ID_CONTINUE:
+            raise LexicalError(f"invalid character [{e.symbol}] in int literal {token + e.symbol}", buffer.line, buffer.col)
+    except InvalidSequence as e:
         # check if 0 has leading 0s
         if token[0] in ZERO_DIGIT:
-            buffer.put(1)
             raise LexicalError(f"leading zeros in int literal are not permitted", buffer.line, buffer.col)
-
-        # valid character
-        token += c
+        else:
+            # this should not happen
+            assert False
 
     return token
 
@@ -125,16 +128,24 @@ def _detect_id_or_keyword(buffer: ImmutableBuffer, c: str) -> str:
 
     Returns: an id / a keyword
     """
-    token: str = c
+    token: str = ""
 
-    while c := buffer.get(1):
-        # invalid character was found
-        if c not in ID_CONTINUE:
-            buffer.put(1)
-            break
+    # place the character back
+    buffer.put(1)
 
-        # valid character was found
-        token += c
+    # init finite automaton
+    fa = FiniteAutomata("input/fa_identifier.toml")
+
+    try:
+        for c in fa.check_acceptance(buffer):
+            token += c
+    except InvalidSymbol as e:
+        if e.symbol in ID_CONTINUE:
+            # this should not happen
+            assert False
+    except InvalidSequence as e:
+        # this should not happen
+        assert False
 
     return token
 

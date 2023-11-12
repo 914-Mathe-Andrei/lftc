@@ -2,7 +2,7 @@ import json
 import unittest
 
 from src.errors import SymTableError
-from src.stuctures.symtable import IdSymTable, LiteralSymTable
+from src.structures.symtable import IdSymTable, LiteralSymTable
 
 
 class IdSymTableTestCase(unittest.TestCase):

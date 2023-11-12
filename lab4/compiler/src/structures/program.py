@@ -1,5 +1,5 @@
-from src.stuctures.pif import ProgramInternalForm
-from src.stuctures.symtable import IdSymTable, LiteralSymTable
+from src.structures.pif import ProgramInternalForm
+from src.structures.symtable import IdSymTable, LiteralSymTable
 
 
 class Program:
