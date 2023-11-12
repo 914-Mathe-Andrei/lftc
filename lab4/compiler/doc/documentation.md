@@ -203,9 +203,9 @@ def __str__(self):
 
 ### errors.py
 
-     The module defines types of compiler errors: ***************SymTableError***************, ******LexicalError******.
+     The module defines types of compiler errors: ***************SymTableError***************, ******LexicalError******, *************InvalidSymbol*************, ***************InvalidSequence***************.
 
-     The ****LexicalError**** class stores the line and column number where the error occurred.
+     The ****LexicalError****, *************InvalidSymbol*************, ***************InvalidSequence*************** classes store the line and column number where the error occurred. Additionaly, the *************InvalidSymbol************* class stores the symbol that cause the error to be raised.
 
 ### buffer.py
 
@@ -285,4 +285,97 @@ def scan(file: IO) -> Program:
             if invalid character in int literal is found
             if leading zeros in int literal are found
     """
+```
+
+### fa.py
+
+     The module contains the ********FiniteAutomata******** class and within the class there is a *****State***** structure representing a FA state that has a name and a list of transitions. A transitions is a key-value pair where the key is the symbol that the state can consume and the value is the next state.
+
+     The **************FiniteAutomata************** class is used for detected int literals, identifiers and keywords.
+
+### State class
+
+The class contains the name of the state and a dictionary of transitions. A transition is a key-value pair where the key is the symbol that the state is able to consume and the value is the next state if that symbol is going to be consumed.
+
+### FiniteAutomata class
+
+The class contains the alphabet as a list of symbols (strings), the states as a dictionary, where the key is the name of the state and the value the corresponding ******State****** instance, the initial state as a *****State***** instance and, finally, the final states as a list of *****State***** instances. The constructor of the class requires as parameter a file where the FA is described in order to load its elements. The user can check if a sequence is accepted by the FA by calling the ********check_acceptance()******** class method that receives an instance of ***************ImmutableBuffer*************** and yields the characters from the buffer that are accepted by the FA. If an character is not part of the FA’s alphabet or a transition is not found for the current state and symbol an **************InvalidSymbol************** / ****************InvalidSequence**************** error is raised. Also, if the sequence found until that moment or after all the character of the buffer are consumed is not accepted an ***************InvalidSequence*************** error is raised.
+
+****************************Format of FA input file in EBNF****************************
+
+     The FA input file is written in [TOML](https://toml.io/en/) and has a fixed structure. Here the FA’s alphabet, states, inital / final states and transitions are described.
+
+```ebnf
+# ALPHABET
+under_score = "_"
+
+digit = "0" | ... | "9"
+
+uppercase_letter = "A" | "B" | ... | "Z"
+lowercase_letter = "a" | "b" | ... | "z"
+letter = uppercase_letter | lowercase_letter
+
+# STARTING RULE
+start = alphabet_decl initial_state_decl final_states_decl states_decl
+
+# GENERAL RULES
+alphabet_decl = "alphabet" "=" symbols_array "\n"
+initial_state_decl = "initial_state" "=" state "\n"
+finial_states_decl = "final_states" "=" states_array "\n"
+states_decl = { state_decl }
+
+state_decl = "[[states]]" "\n" state_name_decl "\n" state_transitions_decl "\n"
+state_name_decl = "name" "=" state
+state_transitions_decl = "transitions" "=" transitions_array
+
+transitions_array = "[" { transition "," } "]"
+transition = "{" "symbol" "=" symbol "," "next_state" "=" state "}"
+
+states_array = "[" { state "," } "]"
+state = '"' ( underscore | letter | digit ) { underscore | letter | digit } '"'
+
+symbols_array = "[" { symbol "," } "]"
+symbol = '"' ( underscore | letter | digit ) { underscore | letter | digit } '"'
+```
+
+************************************************Example of FA input file************************************************
+
+```toml
+alphabet = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+initial_state = "A"
+final_states = [ "B", "C" ]
+
+[[states]]
+name = "A"
+transitions = [
+    { symbol = "0", next_state = "B" },
+    { symbol = "1", next_state = "C" },
+    { symbol = "2", next_state = "C" },
+    { symbol = "3", next_state = "C" },
+    { symbol = "4", next_state = "C" },
+    { symbol = "5", next_state = "C" },
+    { symbol = "6", next_state = "C" },
+    { symbol = "7", next_state = "C" },
+    { symbol = "8", next_state = "C" },
+    { symbol = "9", next_state = "C" },
+]
+
+[[states]]
+name = "B"
+transitions = []
+
+[[states]]
+name = "C"
+transitions = [
+    { symbol = "0", next_state = "C" },
+    { symbol = "1", next_state = "C" },
+    { symbol = "2", next_state = "C" },
+    { symbol = "3", next_state = "C" },
+    { symbol = "4", next_state = "C" },
+    { symbol = "5", next_state = "C" },
+    { symbol = "6", next_state = "C" },
+    { symbol = "7", next_state = "C" },
+    { symbol = "8", next_state = "C" },
+    { symbol = "9", next_state = "C" },
+]
 ```

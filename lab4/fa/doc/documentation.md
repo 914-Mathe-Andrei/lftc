@@ -25,7 +25,7 @@ The class contains the name of the state and a dictionary of transitions. A tran
 
 ### FiniteAutomata
 
-The class contains the alphabet as a list of symbols (strings), the states as a dictionary, where the key is the name of the state and the value the corresponding ******State****** instance, the initial state as a *****State***** instance and, finally, the final states as a list of *****State***** instances. The constructor of the class requires as parameter a file where the FA is described in order to load its elements. The user can check if a sequence is accepted by the FA by calling the ********check_sequence()******** class method that receives a sequence (actually a string) and return ****True**** if it is accepted, otherwise *****False*****.
+The class contains the alphabet as a list of symbols (strings), the states as a dictionary, where the key is the name of the state and the value the corresponding ******State****** instance, the initial state as a *****State***** instance and, finally, the final states as a list of *****State***** instances. The constructor of the class requires as parameter a file where the FA is described in order to load its elements. The user can check if a sequence is accepted by the FA by calling the ********check_acceptance()******** class method that receives a sequence (actually a string) and return ****True**** if it is accepted, otherwise *****False*****.
 
 ## III. FA input file
 
