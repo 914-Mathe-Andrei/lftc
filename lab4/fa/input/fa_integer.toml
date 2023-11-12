@@ -1,0 +1,37 @@
+alphabet = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+initial_state = "A"
+final_states = ["B", "C"]
+
+[[states]]
+name = "A"
+transitions = [
+    { symbol = "0", next_state = "B" },
+    { symbol = "1", next_state = "C" },
+    { symbol = "2", next_state = "C" },
+    { symbol = "3", next_state = "C" },
+    { symbol = "4", next_state = "C" },
+    { symbol = "5", next_state = "C" },
+    { symbol = "6", next_state = "C" },
+    { symbol = "7", next_state = "C" },
+    { symbol = "8", next_state = "C" },
+    { symbol = "9", next_state = "C" },
+]
+
+[[states]]
+name = "B"
+transitions = []
+
+[[states]]
+name = "C"
+transitions = [
+    { symbol = "0", next_state = "C" },
+    { symbol = "1", next_state = "C" },
+    { symbol = "2", next_state = "C" },
+    { symbol = "3", next_state = "C" },
+    { symbol = "4", next_state = "C" },
+    { symbol = "5", next_state = "C" },
+    { symbol = "6", next_state = "C" },
+    { symbol = "7", next_state = "C" },
+    { symbol = "8", next_state = "C" },
+    { symbol = "9", next_state = "C" },
+]
