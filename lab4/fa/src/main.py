@@ -48,8 +48,11 @@ def main():
                     print()
             case '6':
                 sequence = input("Write a sequence:\n> ")
-                accepted: bool = fa.check_acceptance(sequence)
-                print("Accepted!" if accepted else "Rejected!")
+                try:
+                    accepted: bool = fa.check_acceptance(sequence)
+                    print("Accepted!" if accepted else "Rejected!")
+                except Exception as e:
+                    print(e)
             case _:
                 print("Invalid option!")
 

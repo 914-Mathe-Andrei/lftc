@@ -9,7 +9,7 @@ class FiniteAutomata:
     class State:
         """ Represents the state of a finite automaton. """
         name: str
-        transitions: dict[str, "FiniteAutomata.State"]
+        transitions: dict[str, list["FiniteAutomata.State"]]
 
     def __init__(self, filepath: str):
         """ Initializes the FA described in `filepath`.
@@ -60,8 +60,17 @@ class FiniteAutomata:
                 if next_state not in self.states:
                     raise KeyError(f"Transition ({name}, {symbol}) has as next state {next_state}, but {next_state} was not found in the set of states!")
 
+                # check if transition is described twice
+                if symbol in self.states[name].transitions:
+                    count = self.states[name].transitions[symbol].count(self.states[next_state])
+                    if count > 1:
+                        raise KeyError(f"Transition ({name}, {symbol}) = {next_state} is defined twice!")
+
                 # add the new transition
-                self.states[name].transitions[symbol] = self.states[next_state]
+                if symbol not in self.states[name].transitions:
+                    self.states[name].transitions[symbol] = [self.states[next_state]]
+                else:
+                    self.states[name].transitions[symbol].append(self.states[next_state])
 
         # init initial state
         self.initial_state = self.states[data['initial_state']]
@@ -75,6 +84,13 @@ class FiniteAutomata:
             # add the final state
             self.final_states.append(self.states[final_state])
 
+    def _verify_dfa(self) -> bool:
+        for state in self.states.values():
+            for symbol in state.transitions:
+                if len(state.transitions[symbol]) > 1:
+                    return False
+        return True
+
     def check_acceptance(self, sequence: str) -> bool:
         """ Check if `sequence` is accepted by the FA.
 
@@ -82,7 +98,14 @@ class FiniteAutomata:
             sequence: a string
 
         Returns: True if `sequence` is accepted by FA else False
+
+        Raises:
+            Exception: if FA is not deterministic
         """
+        # check if FA is deterministic
+        if self._verify_dfa() is False:
+            raise Exception("FA is not deterministic, therefore the sequence could not be checked for acceptance!")
+
         # set current state to be the initial state
         current_state = self.initial_state
 
@@ -97,7 +120,7 @@ class FiniteAutomata:
                 return False
 
             # perform transition
-            current_state = current_state.transitions[symbol]
+            current_state = current_state.transitions[symbol][0]
 
         # check if the current state is part of the FA's final states
         if current_state not in self.final_states:
