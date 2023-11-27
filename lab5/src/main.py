@@ -1,20 +1,20 @@
-import sys
-import math
-from src.grammar import Grammar
-from src.lexer import scan
-from src.structures.program import Program
-from src.errors import LexicalError
-from typing import IO
+from src import parser
+from src.structures.grammar import Grammar
 
 
 def print_menu() -> None:
     print("Menu:")
-    print("1. display terminals")
-    print("2. display nonterminals")
-    print("3. display all productions")
-    print("4. display production for a nonterminal")
-    print("5. check if grammar is cfg")
+    print("1. display start nonterminal")
+    print("2. display terminals")
+    print("3. display nonterminals")
+    print("4. display all productions")
+    print("5. display production for a nonterminal")
+    print("6. check if grammar is cfg")
     print("x. exit")
+
+
+def print_start_nonterminal(grammar: Grammar) -> None:
+    print(grammar.start)
 
 
 def print_terminals(grammar: Grammar) -> None:
@@ -53,10 +53,7 @@ def print_check_cfg(grammar: Grammar) -> None:
     print(f"grammar {'is' if grammar.is_cfg() else 'is not'} a CFG")
 
 
-def main():
-    syntax_path: str = 'input/syntax.toml'
-    grammar = Grammar(syntax_path)
-
+def run(grammar: Grammar) -> None:
     while True:
         print_menu()
 
@@ -66,20 +63,31 @@ def main():
 
         match option:
             case '1':
-                print_terminals(grammar)
+                print_start_nonterminal(grammar)
             case '2':
-                print_nonterminals(grammar)
+                print_terminals(grammar)
             case '3':
-                print_productions(grammar)
+                print_nonterminals(grammar)
             case '4':
+                print_productions(grammar)
+            case '5':
                 nonterminal: str = input('> Enter a nonterminal: ').strip()
                 print_productions_for_nonterminal(grammar, nonterminal)
-            case '5':
+            case '6':
                 print_check_cfg(grammar)
             case _:
                 print('Invalid option!')
 
         print()
+
+
+def main():
+    syntax_path: str = 'input/g1.toml'
+    parser.parse(syntax_path)
+
+    # # run menu
+    # grammar = Grammar(syntax_path)
+    # run(grammar)
 
     # program_path: str = "examples/p1.mat"
     # st_path: str = "examples/ST.out"

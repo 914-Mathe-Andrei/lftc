@@ -3,6 +3,7 @@ import tomllib
 
 class Grammar:
     def __init__(self, filepath: str):
+        self.start: str = None
         self.terminals: list[str] = []
         self.nonterminals: list[str] = []
         self.productions: dict[str, list[list[str]]] = {}
@@ -13,6 +14,7 @@ class Grammar:
         with open(filepath, 'rb') as file:
             data = tomllib.load(file)
 
+        self.start = data['start']
         self.terminals = data['terminals']
         self.nonterminals = data['nonterminals']
 
