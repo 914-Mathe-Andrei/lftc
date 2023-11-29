@@ -82,7 +82,7 @@ def run(grammar: Grammar) -> None:
 
 
 def main():
-    syntax_path: str = 'input/g1.toml'
+    syntax_path: str = 'input/g2.toml'
     parser.parse(syntax_path)
 
     # # run menu

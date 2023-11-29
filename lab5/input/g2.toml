@@ -246,5 +246,5 @@ productions = [
 [[rules]]
 nonterminal = "start"
 productions = [
-    "fn main ( ) -> int stmt_block",
+    "fn ID ( ) -> int stmt_block",
 ]
