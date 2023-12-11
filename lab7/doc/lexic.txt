@@ -1,0 +1,31 @@
+Alphabet:
+    letters: A-Z, a-z
+    digits: 0-9
+    special characters: _ + - * / % = ! & | < > ( ) [ ] { } : ; , . "
+
+
+Lexic:
+- operators: + - * / % = == != ! && || < <= > >= .
+
+- separators: () [] {} : ; , -> whitespace
+
+- reserved words (keywords): int str var const if else while read write fn return
+
+- identifiers: a sequence of letters / digits / underscores such that the first character is underscore or a letter
+    id: ( underscore | letter ) { letter | digit | underscore }
+
+    uppercase_letter: "A" | "B" | ... | "Z"
+    lowercase_letter: "a" | ... | "z"
+    letter: uppercase_letter | lowercase_letter
+
+    zero_digit: "0"
+    nonzero_digit: "1" | ... | "9"
+    digit: zero_digit | nonzero_digit
+
+    underscore: "_"
+
+- constants:
+    1. integer: digit zero or a sequence of digits such that the first digit is not zero
+        int: zero_digit | nonzero_digit { digit }
+    2. string: a sequence of zero or more letters / digits written between double quotes
+        str: '"' { letter | digit } '"'
