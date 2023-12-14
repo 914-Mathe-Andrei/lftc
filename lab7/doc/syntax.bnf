@@ -29,7 +29,9 @@
 
 # STARTING RULES
 # ==============
-start: "fn" identifier "(" ")" "->" "int" stmt_block
+start:
+    | function
+    | function start
 
 # GENERAL RULES
 # =============
@@ -101,3 +103,8 @@ stmt_list:
 stmt_block:
     | "{" "}"
     | "{" stmt_list "}"
+
+function: "fn" identifier "(" args ")" -> type stmt_block
+
+arg: identifier ":" type
+args: arg | arg "," args

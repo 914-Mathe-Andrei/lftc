@@ -1,10 +1,11 @@
 from src.parser.state import State
 from src.parser.configuration import Configuration
 from src.errors import SyntaxError
+from src.structures.pif import TokenType, ProgramInternalForm
 
 
 class Action:
-    """ An action for shift state in LR(0) parser. """
+    """ An action (accept / shift / reduce) for a state in LR(0) parser. """
     pass
 
 
@@ -52,9 +53,21 @@ class Shift(Action):
         if len(config.input_stack) == 0:
             raise SyntaxError(f"failed to apply shift action, input stack is empty")
 
-        symbol = config.input_stack.pop(1)[0].token
-        if symbol not in self.goto:
+        entry: ProgramInternalForm.Entry = config.input_stack.pop(1)[0]
+        symbol = entry.token
+        symbol_type = entry.type
+        if symbol_type == TokenType.IDENTIFIER and 'ID' in self.goto:
+            next_state = self.goto['ID']
+        elif symbol_type == TokenType.LITERAL:
+            if 'INT' in self.goto:
+                next_state = self.goto['INT']
+            elif 'STR' in self.goto:
+                next_state = self.goto['STR']
+            else:
+                raise SyntaxError(f"failed to apply shift action, there is not a next state for ({symbol}, {config.working_stack.top()})")
+        elif symbol in self.goto:
+            next_state = self.goto[symbol]
+        else:
             raise SyntaxError(f"failed to apply shift action, there is not a next state for ({symbol}, {config.working_stack.top()})")
 
-        next_state = self.goto[symbol]
         config.working_stack.push([symbol, next_state])

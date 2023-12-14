@@ -76,6 +76,8 @@ class Parser:
         while True:
             state = config.working_stack.top()
             action = self.__table[state]
+
+            # apply action on current configuration
             if isinstance(action, Shift):
                 action.apply(config)
             elif isinstance(action, Reduce):
@@ -256,6 +258,7 @@ class Parser:
                         else:
                             # shift-reduce / reduce-reduce error
                             raise GrammarError(f"action reduce \"{item.nonterminal} -> {' '.join(item.production)}\" found for state {state}, but it already has {type(table[state]).__name__.lower()} action assigned")
+                            # print(f"action reduce \"{item.nonterminal} -> {' '.join(item.production)}\" found for state {state}, but it already has {type(table[state]).__name__.lower()} action assigned")
 
                 # check for shift action
                 else:
@@ -272,5 +275,6 @@ class Parser:
                     else:
                         # shift-reduce error
                         raise GrammarError(f"action shift ({item.production[item.current_symbol_idx]}, {next_state}) found for state {state}, but it already has {type(table[state]).__name__.lower()} action assigned")
+                        # print(f"action shift ({item.production[item.current_symbol_idx]}, {next_state}) found for state {state}, but it already has {type(table[state]).__name__.lower()} action assigned")
 
         return table

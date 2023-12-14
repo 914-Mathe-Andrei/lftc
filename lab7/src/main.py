@@ -30,22 +30,22 @@ def compile(source_path: str | Path, output_dir: str | Path) -> None:
     parsing_tree_path = output_dir / 'PARSING_TREE.out'
 
     try:
-        # scan
-        program: Program = lexer.scan(source_path)
-        print("Lexically correct")
-
-        program.id_symtable.dump(id_symtable_path)
-        program.literal_symtable.dump(literal_symtable_path)
-        program.pif.dump(pif_path, pretty=False)
-
-        # parse
-        parser = Parser(grammar_path)
-        parser_output = parser.parse(program.pif)
-
-        # pif = ProgramInternalForm()
-        # pif.load('examples/input/seq.txt')
+        # # scan
+        # program: Program = lexer.scan(source_path)
+        # print("Lexically correct")
+        #
+        # program.id_symtable.dump(id_symtable_path)
+        # program.literal_symtable.dump(literal_symtable_path)
+        # program.pif.dump(pif_path, pretty=False)
+        #
+        # # parse
         # parser = Parser(grammar_path)
-        # parser_output = parser.parse(pif)
+        # parser_output = parser.parse(program.pif)
+
+        pif = ProgramInternalForm()
+        pif.load('examples/input/seq.txt')
+        parser = Parser(grammar_path)
+        parser_output = parser.parse(pif)
 
         parser_output.dump(parsing_tree_path)
         print(f"Parsing tree:\n{parser_output}")

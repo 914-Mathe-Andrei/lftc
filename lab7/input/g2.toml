@@ -23,6 +23,9 @@ nonterminals = [
     "stmt",
     "stmt_list",
     "stmt_block",
+    "function",
+    "args",
+    "arg",
     "start",
 ]
 terminals = [
@@ -244,7 +247,27 @@ productions = [
 ]
 
 [[rules]]
+nonterminal = "function"
+productions = [
+    "fn ID ( args ) : -> type stmt_block"
+]
+
+[[rules]]
+nonterminal = "args"
+productions = [
+    "arg",
+    "arg , args"
+]
+
+[[rules]]
+nonterminal = "arg"
+productions = [
+    "ID : type"
+]
+
+[[rules]]
 nonterminal = "start"
 productions = [
-    "fn ID ( ) -> int stmt_block",
+    "function start",
+    "function"
 ]
