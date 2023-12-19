@@ -67,6 +67,7 @@ class ParserOutput:
             file.write(str(self))
 
     def __str__(self):
+        # improvement: use a library for printing tables (makes this easier to read)
         result = ''
         width_table = 65
         no_columns = 4

@@ -28,7 +28,8 @@ class Reduce(Action):
         num_reduced_elements = 2 * len(self.production)
 
         if len(config.working_stack) < num_reduced_elements:
-            raise SyntaxError(f"")
+            raise SyntaxError(f"failed to apply reduce action, working stack does not have enough elements needed to "
+                              f"reduce for production {self.nonterminal} -> {self.production} (no {self.production_no})")
 
         config.working_stack.pop(num_reduced_elements)
 
