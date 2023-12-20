@@ -1,0 +1,48 @@
+%{
+int line = 1;
+%}
+
+%option noyywrap
+
+WHITESPACE              [[:space:]]
+NEWLINE                 \n
+
+UNDERSCORE              _
+
+UPPERCASE_LETTER        [A-Z]
+LOWERCASE_LETTER        [a-z]
+LETTER                  ({UPPERCASE_LETTER}|{LOWERCASE_LETTER})
+
+ZERO_DIGIT              0
+NONZERO_DIGIT           [1-9]
+DIGIT                   ({ZERO_DIGIT}|{NONZERO_DIGIT})
+
+OPERATOR                (&&|\|\||==|!=|<=|>=|<|>|\+|-|\*|\/|%|=|!|\.)
+SEPARATOR               (\(|\)|\[|\]|\{|\}|:|;|,|->)
+RESERVED_WORD           (int|str|var|const|if|else|while|read|write|fn|return)
+
+ID                      ({UNDERSCORE}|{LETTER})({UNDERSCORE}|{LETTER}|{DIGIT})*
+INT                     ({ZERO_DIGIT}|{NONZERO_DIGIT}{DIGIT}*)
+STR                     "({LETTER}|{DIGIT})+"
+
+%%
+
+{OPERATOR}              printf("%s OPERATOR\n", yytext);
+{SEPARATOR}             printf("%s SEPARATOR\n", yytext);
+{RESERVED_WORD}         printf("%s KEYWORD\n", yytext);
+{ID}                    printf("%s ID\n", yytext);
+{INT}{ID}               { printf("LexicalError (line %d): id cannot start with digit: %s", line, yytext); return 1; }
+{ZERO_DIGIT}{INT}       { printf("LexicalError (line %d): int cannot have leading 0s: %s", line, yytext); return 1; }
+{INT}                   printf("%s INT\n", yytext);
+{STR}                   printf("%s STR\n", yytext);
+{NEWLINE}               { line++; }
+{WHITESPACE}
+<<EOF>>                 return 0;
+.                       { printf("LexicalError (line %d): unknown symbol: %s", line, yytext); return 1; }
+
+%%
+
+int main(int argc, char** argv) {
+      yylex();
+      return 0;
+}

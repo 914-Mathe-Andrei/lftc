@@ -1,0 +1,3 @@
+max ID
+( SEPARATOR
+LexicalError (line 0): id cannot start with digit: 1num1
