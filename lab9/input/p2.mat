@@ -1,0 +1,27 @@
+fn sort(arr: [int; 5]) -> null {
+    var i: int;
+    var j: int;
+
+    i = 0;
+
+    while (i < arr.len) {
+        j = i;
+        while (j < arr.len) {
+            if (arr[i] > arr[j]) {
+                var aux: int;
+                aux = arr[i];
+                arr[i] = arr[j];
+                arr[j] = arr[i];
+            }
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+}
+
+fn main() -> int {
+    var arr: [int; 5];
+    arr = [5, 4, 3, 2, 1];
+    sort(arr);
+    return 0;
+}

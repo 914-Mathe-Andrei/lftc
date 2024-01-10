@@ -1,0 +1,20 @@
+fn sum(arr: [int; 10]) -> int {
+    var res: int;
+    res = 0;
+
+    var i: int;
+    i = 0;
+    while (i < arr.len) {
+        res = res + arr[i];
+        i = i + 1;
+    }
+
+    return res;
+}
+
+fn main() -> int {
+    var arr: [int; 5];
+    arr = [5, 4, 3, 2, 1];
+    sum(arr);
+    return 0;
+}
